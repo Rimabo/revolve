@@ -22,6 +22,7 @@ class PopulationConfig:
                  population_management,
                  population_management_selector,
                  evaluation_time,
+                 state_update_frequency,
                  offspring_size=None):
         """
         Creates a PopulationConfig object that sets the particular configuration for the population
@@ -49,6 +50,7 @@ class PopulationConfig:
         self.population_management = population_management
         self.population_management_selector = population_management_selector
         self.evaluation_time = evaluation_time
+        self.state_update_frequency = state_update_frequency
         self.offspring_size = offspring_size
 
 
@@ -144,7 +146,7 @@ class Population:
         :param world: world object for simulator
         """
         # Insert the robot in the simulator
-        insert_future = await world.insert_robot(individual.phenotype, Vector3(0, 0, 0.25))
+        insert_future = await world.insert_robot(individual.phenotype, Vector3(0, 0, 0.05))
         robot_manager = await insert_future
 
         # Resume simulation
@@ -154,8 +156,9 @@ class Population:
         max_age = self.conf.evaluation_time # + self.conf.warmup_time
         while robot_manager.age() < max_age:
             individual.fitness = robot_manager.fitness()
-            await asyncio.sleep(1.0 / 5) # 5= state_update_frequency
+            await asyncio.sleep(1.0 / (self.conf.state_update_frequency*2))  # 1.0 / (5*2)
 
         await world.pause(True)
         delete_future = await world.delete_robot(robot_manager)
+        await delete_future
         await world.reset(rall=True, time_only=False, model_only=False)

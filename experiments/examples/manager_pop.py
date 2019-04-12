@@ -68,6 +68,7 @@ async def run():
         population_management=steady_state_population_management,
         population_management_selector=dummy_selection,
         evaluation_time=30,
+        state_update_frequency=settings.pose_update_frequency,
         offspring_size=5,
     )
 

@@ -27,7 +27,7 @@ using namespace revolve::gazebo;
 
 /////////////////////////////////////////////////
 WorldController::WorldController()
-    : robotStatesPubFreq_(0)
+    : robotStatesPubFreq_(5)
     , lastRobotStatesUpdateTime_(0)
 {
 }
@@ -128,7 +128,9 @@ void WorldController::OnUpdate(const ::gazebo::common::UpdateInfo &_info)
 // Process insert and delete requests
 void WorldController::HandleRequest(ConstRequestPtr &request)
 {
-  if (request->request() == "delete_robot")
+  const std::string &request_name = request->request();
+
+  if (request_name == "delete_robot")
   {
     auto name = request->data();
     std::cout << "Processing request `" << request->id()
@@ -168,7 +170,7 @@ void WorldController::HandleRequest(ConstRequestPtr &request)
       this->responsePub_->Publish(resp);
     }
   }
-  else if (request->request() == "insert_sdf")
+  else if (request_name == "insert_sdf")
   {
     std::cout << "Processing insert model request ID `" << request->id() << "`."
               << std::endl;
@@ -189,7 +191,7 @@ void WorldController::HandleRequest(ConstRequestPtr &request)
     // https://bitbucket.org/osrf/sdformat/issues/104/memory-leak-in-element
     robotSDF.Root()->Reset();
   }
-  else if (request->request() == "set_robot_state_update_frequency")
+  else if (request_name == "set_robot_state_update_frequency")
   {
     auto frequency = request->data();
     assert(frequency.find_first_not_of( "0123456789" ) == std::string::npos);
@@ -265,4 +267,9 @@ void WorldController::HandleResponse(ConstResponsePtr &response)
   resp.set_request("delete_robot");
   resp.set_response("success");
   this->responsePub_->Publish(resp);
+}
+
+void WorldController::Reset() {
+    WorldPlugin::Reset();
+    this->lastRobotStatesUpdateTime_= 0;
 }

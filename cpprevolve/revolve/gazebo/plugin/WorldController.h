@@ -51,6 +51,8 @@ namespace revolve
               ::gazebo::physics::WorldPtr _parent,
               sdf::ElementPtr _sdf);
 
+      void Reset() override;
+
       protected:
       // Listener for analysis requests
       virtual void HandleRequest(ConstRequestPtr &request);
