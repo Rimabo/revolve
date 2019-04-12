@@ -11,6 +11,7 @@ jobs:
 
       - restore_cache:
           keys:
+            - v1-{{ .Branch }}-{{ .Revision }}
             - v1-{{ .Branch }}
             - v1-
           paths:
@@ -34,7 +35,7 @@ jobs:
             mkdir -p ~/caches
             docker save -o ~/caches/revolve.tar cigroup/revolve:${CIRCLE_BRANCH//\//_}
       - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
+          key: v1-{{ .Branch }}-{{ .Revision }}-{{ epoch }}
           paths:
             - ~/caches/revolve.tar
   test:
@@ -47,7 +48,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ~/caches/revolve.tar
       - run:
@@ -71,7 +72,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ~/caches/revolve.tar
 
