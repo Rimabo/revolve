@@ -5,7 +5,7 @@ from ..revolve_module import ActiveHingeModule, BrickModule, TouchSensorModule, 
 
 
 class MeasureBody:
-    def __init__(self, body):
+    def __init__(self, body, max_permitted_modules=None):
         self.body = body
 
         # Absolute branching
@@ -51,7 +51,7 @@ class MeasureBody:
         # Number of free slots
         self.free_slots = None
         # Maximum number of modules allowed (sensors excluded)
-        self.max_permitted_modules = None
+        self.max_permitted_modules = max_permitted_modules
 
     def count_branching_bricks(self, module=None, init=True):
         """

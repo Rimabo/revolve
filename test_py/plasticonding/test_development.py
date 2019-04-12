@@ -84,7 +84,7 @@ class Test176(unittest.TestCase):
         self.robot.render2d('/tmp/robot.png')
         self.genotype.export_genotype('/tmp/cacca.txt')
 
-        m = self.robot.measure_body()
+        m = self.robot.measure_body(max_permitted_modules=100)
         self.assertAlmostEqual(branching, m.branching, 3)
         self.assertAlmostEqual(connectivity1, m.limbs, 3)
         self.assertAlmostEqual(connectivity1_abs, m.extremities, 3)

@@ -64,21 +64,21 @@ class RevolveBot:
         """
         pass
 
-    def measure_phenotype(self, export: bool = False):
-        self._morphological_measurements = self.measure_body()
+    def measure_phenotype(self, export: bool = False, max_permitted_modules=None):
+        self._morphological_measurements = self.measure_body(max_permitted_modules)
         self._brain_measurements = self.measure_brain()
         print('Robot ' + str(self.id) + ' was measured.')
         if export:
             self.export_phenotype_measurements()
 
-    def measure_body(self):
+    def measure_body(self, max_permitted_modules=None):
         """
         :return: dict of body measurements
         """
         if self._body is None:
             raise RuntimeError('Body not initialized')
         try:
-            measure = MeasureBody(self._body)
+            measure = MeasureBody(self._body, max_permitted_modules)
             measure.measure_all()
             return measure
         except Exception as e:

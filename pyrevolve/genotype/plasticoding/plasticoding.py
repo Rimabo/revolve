@@ -108,7 +108,7 @@ class Plasticoding(Genotype):
         :type conf: PlasticodingConfig
         """
         self.conf = conf
-        self.id = 'genotype' + str(next(self.id_iter))
+        self.id = next(self.id_iter)
         self.grammar = {}
 
         # Auxiliary variables
@@ -218,9 +218,7 @@ class Plasticoding(Genotype):
         print('Robot ' + str(self.id) + ' was early-developed.')
 
     def late_development(self):
-
-        self.phenotype = RevolveBot()
-        self.phenotype._id = self.id.replace('genome', 'pheno')
+        self.phenotype = RevolveBot('plasticoding_{}'.format(self.id))
         self.phenotype._brain = BrainNN()
 
         for symbol in self.intermediate_phenotype:
