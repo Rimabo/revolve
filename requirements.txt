@@ -11,4 +11,4 @@ graphviz>=0.10.1
 joblib
 pandas
 
--e git+https://github.com/ci-group/pygazebo.git@py2to3#egg=pygazebo
+-e git+https://github.com/Rimabo/pygazebo@disconnect#egg=pygazebo

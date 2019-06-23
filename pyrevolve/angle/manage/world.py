@@ -8,10 +8,11 @@ import shutil
 import sys
 import traceback
 
-from asyncio import Future
+from asyncio import Future, InvalidStateError
 from datetime import datetime
 from pygazebo.msg import gz_string_pb2
 from pygazebo.msg.contacts_pb2 import Contacts
+from pygazebo.pygazebo import DisconnectError
 
 from pyrevolve.SDF.math import Vector3
 from pyrevolve.spec.msgs import BoundingBox
@@ -24,6 +25,8 @@ from ...util import multi_future
 from ...util import Time
 from ...custom_logging.logger import logger
 
+class InsertError(RuntimeError):
+    pass
 
 class WorldManager(manage.WorldManager):
     """
@@ -434,15 +437,24 @@ class WorldManager(manage.WorldManager):
 
         future = Future()
         insert_future = await self.insert_model(sdf_bot)
-        def _callback(_future):
+        
+        def _callback(insert_future_completed):
             try:
+                insert_exception = insert_future_completed.exception()
+                if insert_exception is not None:
+                    logger.info(f"aaaaaaaaaaaaaaaaaaanew {insert_exception}")
+                    raise InsertError()
                 self._robot_inserted(
                         robot=revolve_bot,
-                        msg=_future.result(),
+                        msg=insert_future_completed.result(),
                         return_future=future
                         )
+            except (InvalidStateError, DisconnectError) as a:
+                logger.info("cccccccccccccccccccnew")
+                future.set_exception(a)
             except Exception as e:
-                _future.set_exception(e)
+                logger.info(f"bbbbbbbbbbbbbbbbbbnew")
+                future.set_exception(e)
         insert_future.add_done_callback(_callback)
         return future
 

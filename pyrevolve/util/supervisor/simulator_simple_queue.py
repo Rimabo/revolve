@@ -134,7 +134,11 @@ class SimulatorSimpleQueue:
             robot_fitness = 0.00
         else:
             await simulator_connection.pause(True)
-            insert_future = await simulator_connection.insert_robot(robot.phenotype, Vector3(0, 0, self._settings.z_start))
+            try:
+                insert_future = await simulator_connection.insert_robot(robot.phenotype, Vector3(0, 0, self._settings.z_start))
+            except InsertException:
+                print(f'aaaaaaaaa \n {e}')
+                await asyncio.sleep(120)
             robot_manager = await insert_future
             await simulator_connection.pause(False)
             start = time.time()

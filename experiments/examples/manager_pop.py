@@ -25,7 +25,7 @@ async def run():
     num_generations = 100
 
     genotype_conf = PlasticodingConfig(
-        max_structural_modules=100,
+        max_structural_modules=20,
     )
 
     mutation_conf = MutationConfig(
@@ -61,7 +61,7 @@ async def run():
         population_management=steady_state_population_management,
         population_management_selector=tournament_selection,
         evaluation_time=settings.evaluation_time,
-        offspring_size=50,
+        offspring_size=100,
         experiment_name=settings.experiment_name,
         experiment_management=experiment_management,
         measure_individuals=settings.measure_individuals,
