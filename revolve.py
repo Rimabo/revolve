@@ -36,10 +36,10 @@ def main():
             print(context['message'])
             return
 
-        if isinstance(exc, DisconnectError) \
-                or isinstance(exc, ConnectionResetError):
-            print("Got disconnect / connection reset - shutting down.")
-            sys.exit(0)
+        # if isinstance(exc, DisconnectError) \
+        #         or isinstance(exc, ConnectionResetError):
+        #     print("Got disconnect / connection reset - shutting down.")
+        #     sys.exit(0)
 
         if isinstance(exc, OSError) and exc.errno == 9:
             print(exc)
