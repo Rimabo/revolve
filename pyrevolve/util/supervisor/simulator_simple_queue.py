@@ -91,6 +91,7 @@ class SimulatorSimpleQueue:
                 return
 
             if isinstance(exc, DisconnectError):
+                print("HANDLER IN SIMPLE QUEUE")
                 return False
         await asyncio.sleep(0.01)
         start = time.time()
