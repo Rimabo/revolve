@@ -83,20 +83,8 @@ class SimulatorSimpleQueue:
         self._connections[i] = await World.create(self._settings, world_address=(address, port))
 
     async def _worker_evaluate_robot(self, connection, robot, future, conf):
-        def handler(_loop,context):
-            try:
-                exc = context['exception']
-            except KeyError:
-                print(context['message'])
-                return
-
-            if isinstance(exc, DisconnectError):
-                print("HANDLER IN SIMPLE QUEUE")
-                return False
         await asyncio.sleep(0.01)
         start = time.time()
-        loop = asyncio.get_running_loop()
-        loop.set_exception_handler(handler)
         evaluation_future = asyncio.create_task(self._evaluate_robot(connection, robot, conf))
         while not evaluation_future.done():
             elapsed = time.time()-start
