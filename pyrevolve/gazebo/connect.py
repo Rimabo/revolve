@@ -12,8 +12,7 @@ default_address = ["127.0.0.1", 11345]
 
 async def connect(address=default_address):
     try:
-        result = Future()
-        manager = await pygazebo.connect(result, address=tuple(address))
+        manager = await pygazebo.connect(address=tuple(address))
     except pygazebo.pygazebo.DisconnectError:
         raise
     except pygazebo.pygazebo.ParseError:
