@@ -237,7 +237,7 @@ class WorldManager(manage.WorldManager):
         if self.do_restore:
             await (self.restore_snapshot(self.do_restore))
 
-    def disconnect(self):
+    async def disconnect(self):
         super().disconnect()
         self.pose_subscriber.remove()
         self.contact_subscriber.remove()
